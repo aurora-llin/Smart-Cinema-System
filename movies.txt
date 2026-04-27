@@ -1,1 +1,13 @@
-1. 
+title,hall,showtime_start,showtime_end,price
+Project Hail Mary,C,14:00,16:40,12.00
+Project Hail Mary,A,10:00,12:40,12.00
+Project Hail Mary,B,18:00,20:40,12.00
+Avengers: DoomsDay,C,8:00,11:30,13.00
+Avengers: DoomsDay,B,13:00,16:30,13.00
+Hoppers,C,16:50,18:35,10.00
+Hoppers,B,18:40,20:35,10.00
+The Super Mario Galaxy Movie,A,8:00,9:38,10.00
+The Super Mario Galaxy Movie,B,12:00,13:38,10.00
+Avatar: Fire and Ash,C,10:00,13:20,13.00
+Avatar: Fire and Ash,B,14:00,17:20,13.00
+Avatar: Fire and Ash,A,18:00,21:20,13.00

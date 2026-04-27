@@ -1,8 +1,7 @@
 import utils
 import booking
-print("---Welcome to Smart Cinema Booking system!---")
 def display_main_menu():
-    utils.clear_screen()
+    # utils.clear_screen()
     print("========================================")
     print("      SMART CINEMA BOOKING SYSTEM       ")
     print("========================================")
@@ -12,7 +11,9 @@ def display_main_menu():
     print("4. Save & Exit")
     print("----------------------------------------")
 
+
 while True:
+    display_main_menu()
     menu_choice = input("Please select an option (1-4): ")
     if menu_choice == '1':
         booking.book_tickets()
@@ -24,3 +25,5 @@ while True:
         booking.save_bookings()
         print("Thank you for using Smart Cinema Booking system. Goodbye!")
         break
+    else:
+        print("Invalid option. Please enter a number between 1 and 4.")
