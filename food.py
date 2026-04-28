@@ -8,7 +8,7 @@ def display_menu():
     print(" • Medium: $5.50 | Large: $6.50")
     print(" • Flavors: Sweet, Caramel, Salty, Cheese, Seaweed, Cheetos")
     print("\n DRINKS:")
-    print(" • Coke: Small: $1.00, Medium: $2.00, Larhe: $2.75")
+    print(" • Coke: Small: $1.00, Medium: $2.00, Large: $2.75")
     print(" • Water: $1.00")
     print("\n SNACKS:")
     print(" • Chicken Nuggets: $2.50 | Fries: $1.75")
