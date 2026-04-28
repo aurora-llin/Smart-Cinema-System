@@ -1,0 +1,55 @@
+ROWS = ['A', 'B', 'C', 'D', 'E', 'F']
+COLS = [1, 2, 3, 4, 5, 6, 7, 8]
+
+def load_seatmap(hall):
+    filename = f"layout_{hall}.txt"
+    seatmap = []
+    try:
+        with open(filename, "r") as f:
+            for line in f:
+                seatmap.append(line.strip().split(","))
+    except FileNotFoundError:
+        print(f"Error: {filename} not found.")
+    return seatmap
+
+def display_seatmap(seatmap):
+    print("\n                 S C R E E N")
+    print("  " + "-" * 40)
+
+    for i, row in enumerate(seatmap):
+        label = ROWS[i]
+        seats = []
+        for j, seat in enumerate(row):
+            if seat == "O":
+                display = "[ ]"
+            else:
+                display = "[X]"
+            # Add aisle gap after column 2 and column 6
+            if j == 2 or j == 6:
+                seats.append("  " + display)
+            else:
+                seats.append(display)
+        print(f"  {label}  " + " ".join(seats))
+
+    print("  " + "-" * 40)
+    print("  [ ] = Available    [X] = Occupied")
+
+def is_seat_available(seatmap, row, col):
+    return seatmap[row][col] == "O" 
+
+def update_seat(seatmap, row, col, status):
+    seatmap[row][col] = status  # "X" to booked, "O" to free
+
+def save_seatmap(seatmap, hall):
+    filename = f"layout_{hall}.txt"
+    with open(filename, "w") as f:
+        for row in seatmap:
+            f.write(",".join(row) + "\n")
+
+def get_row_index(letter):
+    return ROWS.index(letter.upper())
+
+def get_col_index(number):
+    return COLS.index(int(number))
+
+
