@@ -1,6 +1,7 @@
 ROWS = ['A', 'B', 'C', 'D', 'E', 'F']
 COLS = [1, 2, 3, 4, 5, 6, 7, 8]
 
+#open filename as f and add to seatmap as nested list( an inner list representing a row of seats)
 def load_seatmap(hall):
     filename = f"layout_{hall}.txt"
     seatmap = []
@@ -11,6 +12,7 @@ def load_seatmap(hall):
     except FileNotFoundError:
         print(f"Error: {filename} not found.")
     return seatmap
+
 
 def display_seatmap(seatmap):
     print("\n                 S C R E E N")
@@ -40,6 +42,7 @@ def is_seat_available(seatmap, row, col):
 def update_seat(seatmap, row, col, status):
     seatmap[row][col] = status  # "X" to booked, "O" to free
 
+#overwrite the file by rejoining the updated seatmap list
 def save_seatmap(seatmap, hall):
     filename = f"layout_{hall}.txt"
     with open(filename, "w") as f:

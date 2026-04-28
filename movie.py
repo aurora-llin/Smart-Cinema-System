@@ -12,7 +12,6 @@ def load_movies():
                         "hall": parts[1],
                         "start": parts[2],
                         "end": parts[3],
-                        "price": float(parts[4])
                     })
     except FileNotFoundError:
         print("Error: movies.txt not found.")
@@ -24,5 +23,8 @@ def display_movies(movies):
     print("========================================")
     for i, m in enumerate(movies, 1):
         print(f"{i}. {m['title']}")
-        print(f"   Hall {m['hall']} | {m['start']} - {m['end']} | ${m['price']:.2f}")
+        print(f"   Hall {m['hall']} | {m['start']} - {m['end']}")
     print("----------------------------------------")
+
+#test
+display_movies(load_movies())

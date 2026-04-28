@@ -1,5 +1,7 @@
 import movie
 import seatmap
+import smartPricing
+import food
 
 BOOKINGS_FILE = "bookings.txt"
 
