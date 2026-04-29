@@ -1,7 +1,11 @@
+import os
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MOVIE_FILE = os.path.join(BASE_DIR, "movies.txt")
 def load_movies():
     movies = []
     try:
-        with open("movies.txt", "r") as f:
+        with open(MOVIE_FILE, "r") as f:
             next(f)  # skip header line
             for line in f:
                 line = line.strip()

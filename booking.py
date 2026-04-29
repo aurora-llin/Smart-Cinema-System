@@ -180,5 +180,5 @@ def cancel_booking():
     with open(BOOKINGS_FILE, "w") as f:
         f.writelines(remaining)
 
-    print(f"\nBooking {booking_id} has been cancelled and seat {seat} is now available.")
+    print(f"\nBooking {booking_id} has been cancelled and seats {seat_field} are now available.")
 
