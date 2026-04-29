@@ -23,15 +23,6 @@ def display_menu():
     print(" [3] Party Set:  2 Large Popcorn + 4 Large Drinks + Nuggets -> $20.00")
     print("═"*50)
 
-def save_to_file(cart, total):
-    timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    with open("orders.txt", "a") as f:
-        f.write(f"\n--- ORDER DATE: {timestamp} ---\n")
-        for item in cart:
-            f.write(f"- {item}\n")
-        f.write(f"FINAL TOTAL: ${total:.2f}\n")
-        f.write("-" * 30 + "\n")
-
 def order_food():
     cart = []
     total_cost = 0.0
@@ -50,17 +41,19 @@ def order_food():
         choice = input("\nSelect an option (1-6): ")
 
         if choice == '1':
+            size = input("Select Size (M/L) or 0 to go back: ").upper()
+            if size == '0':
+                continue
             size = input("Select Size (M/L): ").upper()
             price = 5.50 if size == 'M' else 6.50
             print(f"Available: {', '.join(flavors_list)}")
             f_choice = input("Pick up to 2 flavors (comma separated): ").split(",")
-            f_clean = [f.strip() for f in f_choice][:2]#make sure only two flavors are added
-            cart.append(f"{size} Popcorn ({', '.join(f_clean)}) - ${price:.2f}")
-            total_cost += price
 
         elif choice == '2':
             print(" 1. Coke(S) $1.00 | 2. Coke(M) $2.00 | 3. Coke(L) $2.75 | 4. Water $1.00")
-            d_choice = input("Select drink: ")
+            d_choice = input("Select drink (1-4) or 0 to go back: ")
+            if d_choice == '0':
+                continue
             if d_choice == '1': cart.append("Small Coke - $1.00"); total_cost += 1.00
             elif d_choice == '2': cart.append("Medium Coke - $2.00"); total_cost += 2.00
             elif d_choice == '3': cart.append("Large Coke - $2.75"); total_cost += 2.75
@@ -68,7 +61,9 @@ def order_food():
 
         elif choice == '3':
             print(" 1. Nuggets $2.50 | 2. Fries $1.75 | 3. Hot Dog $1.00 | 4. Noodles Set $3.25")
-            s_choice = input("Select snack: ")
+            s_choice = input("Select snack (1-4) or 0 to go back: ")
+            if s_choice == '0':
+                continue
             if s_choice == '1': cart.append("Nuggets - $2.50"); total_cost += 2.50
             elif s_choice == '2': cart.append("Fries - $1.75"); total_cost += 1.75
             elif s_choice == '3': cart.append("Hot Dog - $1.00"); total_cost += 1.00
@@ -76,7 +71,9 @@ def order_food():
 
         elif choice == '4':
             print(" 1. Couple Set ($6.00) | 2. Single Set ($5.00) | 3. Party Set ($20.00)")
-            c_choice = input("Select combo: ")
+            c_choice = input("Select combo (1-3) or 0 to go back: ")
+            if c_choice == '0':
+                continue
             if c_choice == '1': cart.append("Couple Set - $6.00"); total_cost += 6.00
             elif c_choice == '2': cart.append("Single Set - $5.00"); total_cost += 5.00
             elif c_choice == '3': cart.append("Party Set - $20.00"); total_cost += 20.00
@@ -90,25 +87,12 @@ def order_food():
                     print(f"   • {item}")
                 print(f"   SUBTOTAL: ${total_cost:.2f}")
 
-        elif choice == '6':
-            if not cart:
-                print("\n Cannot checkout with an empty cart!")
-                continue
-            
-            save_to_file(cart, total_cost)
-            print("\n--- FINAL RECEIPT ---")
-            for item in cart:
-                print(f"- {item}")
-            print(f"TOTAL AMOUNT: ${total_cost:.2f}")
-            print("----------------------\nThank you for purchasing, please enjoy your movie!")
-            
+        elif choice == '6':           
             return cart, total_cost 
             
         else:
             print("Invalid input, please try again.")
 
-if __name__ == "__main__": #same as main function in java, this will only run if this file is executed directly, not imported as a module
-    display_menu()
-    order_food()
+
 
 
