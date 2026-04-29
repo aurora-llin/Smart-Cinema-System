@@ -25,3 +25,5 @@ while True:
         break
     else:
         print("Invalid option. Please enter a number between 1 and 4.")
+
+    input("\nPress Enter to return to the main menu...")

@@ -6,10 +6,6 @@ import random
 
 BOOKINGS_FILE = "bookings.txt"
 
-def save_bookings(booking_record):
-    with open(BOOKINGS_FILE, "a") as f:
-        f.write(booking_record)
-
 def generate_booking_id():
     return "BK" + str(random.randint(10000, 99999))
 
@@ -34,26 +30,39 @@ def book_tickets():
     # Step 2: Display and select seat
     hall = selected_movie['hall']
     seatmap_data = seatmap.load_seatmap(hall)
-    seatmap.display_seatmap(seatmap_data)
-
+    seats = []
+    row_inputs = []
     while True:
-        row_input = input("\nEnter row (A-F): ").upper()
-        col_input = input("Enter column (1-8): ")
+        seatmap.display_seatmap(seatmap_data)
 
-        if row_input not in ['A', 'B', 'C', 'D', 'E', 'F']:
-            print("Invalid row. Please enter A to F.")
-            continue
-        if not col_input.isdigit() or not (1 <= int(col_input) <= 8):
-            print("Invalid column. Please enter 1 to 8.")
-            continue
+        while True:
+            row_input = input("\nEnter row (A-F): ").upper()
+            col_input = input("Enter column (1-8): ")
 
-        row_index = seatmap.get_row_index(row_input)
-        col_index = seatmap.get_col_index(col_input)
+            if row_input not in ['A', 'B', 'C', 'D', 'E', 'F']:
+                print("Invalid row. Please enter A to F.")
+                continue
+            if not col_input.isdigit() or not (1 <= int(col_input) <= 8):
+                print("Invalid column. Please enter 1 to 8.")
+                continue
 
-        if seatmap.is_seat_available(seatmap_data, row_index, col_index):
-            break
-        else:
-            print(f"Seat {row_input}{col_input} is already occupied. Please choose another.")
+            row_index = seatmap.get_row_index(row_input)
+            col_index = seatmap.get_col_index(col_input)
+
+            if seatmap.is_seat_available(seatmap_data, row_index, col_index):
+                seats.append(f"{row_input}{col_input}")
+                row_inputs.append(row_input)
+                seatmap.update_seat(seatmap_data, row_index, col_index, "X")  
+                print(f"Seat {row_input}{col_input} added!")
+                break
+            else:
+                print(f"Seat {row_input}{col_input} is already occupied. Please choose another.")
+        another = input("Add another seat? (yes/no): ").lower()
+        if another != 'yes':
+                break
+    seat_record = " & ".join(seats)
+    print(f"\nSeats confirmed: {seat_record}")
+
 
     # Step 3: Food pre-order 
     print("\n--- Food Pre-order ---")
@@ -69,7 +78,7 @@ def book_tickets():
 
     # Step 4: Pricing
     print("\n--- Pricing ---")
-    ticket_price = smartPricing.get_seat_price(row_input)
+    ticket_price = sum(smartPricing.get_seat_price(r) for r in row_inputs)
     discount_code = input("Enter discount code (or press Enter to skip): ")
     if discount_code:
         discount = smartPricing.apply_discount(ticket_price, discount_code)
@@ -94,14 +103,15 @@ def book_tickets():
     name = input("Enter your name: ")
     booking_id = generate_booking_id()
 
-    seatmap.update_seat(seatmap_data, row_index, col_index, "X")
     seatmap.save_seatmap(seatmap_data, hall)
 
-    booking_record = f"{booking_id},{name},{selected_movie['title']},Hall {hall},{row_input}{col_input},{food_order},{total:.2f}\n"
+    booking_record = f"{booking_id},{name},{selected_movie['title']},Hall {hall},{seat_record},{food_order},{total:.2f}\n"
+    print(f"\n Booking confirmed! Your booking ID is: {booking_id}")
     save_bookings(booking_record)
 
-    print(f"\n Booking confirmed! Your booking ID is: {booking_id}")
-
+def save_bookings(booking_record):
+    with open(BOOKINGS_FILE, "a") as f:
+        f.write(booking_record)
 
 def view_bookings():
     print("\n========================================")
@@ -115,17 +125,18 @@ def view_bookings():
                 return
             for line in lines:
                 parts = line.strip().split(",")
+                seat_field = parts[4]           # ← inside loop now
+                seat_list = seat_field.split(" & ")  # ← inside loop now
                 print(f"ID      : {parts[0]}")
                 print(f"Name    : {parts[1]}")
                 print(f"Movie   : {parts[2]}")
                 print(f"Hall    : {parts[3]}")
-                print(f"Seat    : {parts[4]}")
+                print(f"Seats   : {seat_field} ({len(seat_list)} seat(s))")
                 print(f"Food    : {parts[5]}")
                 print(f"Total   : ${parts[6]}")
                 print("----------------------------------------")
     except FileNotFoundError:
         print("No bookings found.")
-    input("\nPress Enter to return to menu...")
 
 
 def cancel_booking():
@@ -141,28 +152,29 @@ def cancel_booking():
     found = None
     remaining = []
 
-    if not found:
-        print(f"Booking ID '{booking_id}' not found.")
-        return
-
     for line in lines:
         parts = line.strip().split(",")
         if parts[0] == booking_id:
             found = parts
         else:
             remaining.append(line)
+    
+    if not found:
+        print(f"Booking ID '{booking_id}' not found.")
+        return
 
     # Free the seat
-    hall = found[3].replace("Hall ", "")
-    seat = found[4]                      # e.g. "B3"
-    row_letter = seat[0]                 # "B"
-    col_number = seat[1]                 # "3"
-
+    hall = found[3].replace("Hall ", "")                
+    seat_field = found[4]
+    seat_list = seat_field.split(" & ")
     seatmap_data = seatmap.load_seatmap(hall)
-    row_index = seatmap.get_row_index(row_letter)
-    col_index = seatmap.get_col_index(col_number)
-    seatmap.update_seat(seatmap_data, row_index, col_index, "O")
-    seatmap.save_seatmap(seatmap_data, hall)
+    for seat in seat_list:
+        row_letter = seat[0]                           
+        col_number = seat[1:]                          
+        row_index = seatmap.get_row_index(row_letter)
+        col_index = seatmap.get_col_index(col_number)
+        seatmap.update_seat(seatmap_data, row_index, col_index, "O")
+        seatmap.save_seatmap(seatmap_data, hall)
 
     # Remove booking from file
     with open(BOOKINGS_FILE, "w") as f:
