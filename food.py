@@ -44,10 +44,12 @@ def order_food():
             size = input("Select Size (M/L) or 0 to go back: ").upper()
             if size == '0':
                 continue
-            size = input("Select Size (M/L): ").upper()
             price = 5.50 if size == 'M' else 6.50
             print(f"Available: {', '.join(flavors_list)}")
             f_choice = input("Pick up to 2 flavors (comma separated): ").split(",")
+            f_clean = [f.strip() for f in f_choice][:2]
+            cart.append(f"{size} Popcorn ({', '.join(f_clean)}) - ${price:.2f}")
+            total_cost += price
 
         elif choice == '2':
             print(" 1. Coke(S) $1.00 | 2. Coke(M) $2.00 | 3. Coke(L) $2.75 | 4. Water $1.00")

@@ -8,8 +8,14 @@ import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 BOOKINGS_FILE = os.path.join(BASE_DIR, "bookings.txt")
 
-def generate_booking_id():
-    return "BK" + str(random.randint(10000, 99999))
+def generate_booking_id(): #initially I used random numbers but then I thought about possible diplicates.
+    try:
+        with open(BOOKINGS_FILE, "r") as f:
+            lines = f.readlines()
+            count = len(lines) + 1  
+    except FileNotFoundError:
+        count = 1
+    return f"BK{count:04d}"
 
 def book_tickets():
     # Step 1: Display and select movie
@@ -31,7 +37,8 @@ def book_tickets():
 
     # Step 2: Display and select seat
     hall = selected_movie['hall']
-    seatmap_data = seatmap.load_seatmap(hall)
+    showtime = selected_movie['start']
+    seatmap_data = seatmap.load_seatmap(hall,showtime)
     seats = []
     row_inputs = [] #we are using that in row based pricing later in pricing section
     while True:
@@ -105,9 +112,10 @@ def book_tickets():
     name = input("Enter your name: ")
     booking_id = generate_booking_id()
 
-    seatmap.save_seatmap(seatmap_data, hall)
+    seatmap.save_seatmap(seatmap_data, hall,showtime)  # save updated seatmap with booked seats
 
-    booking_record = f"{booking_id},{name},{selected_movie['title']},Hall {hall},{seat_record},{food_order},{total:.2f}\n"
+    # save showtime in booking record
+    booking_record = f"{booking_id},{name},{selected_movie['title']},Hall {hall},{selected_movie['start']},{seat_record},{food_order},{total:.2f}\n"
     print(f"\n Booking confirmed! Your booking ID is: {booking_id}")
     save_bookings(booking_record)
 
@@ -167,16 +175,17 @@ def cancel_booking():
 
     # Free the seat
     hall = found[3].replace("Hall ", "")     # extract hall number from "Hall X"           
-    seat_field = found[4]
+    seat_field = found[5]
     seat_list = seat_field.split(" & ")
-    seatmap_data = seatmap.load_seatmap(hall)
+    showtime = found[4]  # Get the showtime from the booking record
+    seatmap_data = seatmap.load_seatmap(hall, showtime)
     for seat in seat_list:
         row_letter = seat[0]                           
         col_number = seat[1]                          
         row_index = seatmap.get_row_index(row_letter)
         col_index = seatmap.get_col_index(col_number)
         seatmap.update_seat(seatmap_data, row_index, col_index, "O")
-        seatmap.save_seatmap(seatmap_data, hall)
+        seatmap.save_seatmap(seatmap_data, hall, showtime)  
 
     # Remove booking from file
     with open(BOOKINGS_FILE, "w") as f:

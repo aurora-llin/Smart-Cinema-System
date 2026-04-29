@@ -1,4 +1,3 @@
-import seatmap
 
 tier = {  
     'A': 2.0,  

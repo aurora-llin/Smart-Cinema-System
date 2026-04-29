@@ -4,9 +4,13 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 ROWS = ['A', 'B', 'C', 'D', 'E', 'F']
 COLS = [1, 2, 3, 4, 5, 6, 7, 8]
 
+def get_layout_filename(hall, showtime):
+    time = showtime.replace(":", "")  # "10:00" → "1000"
+    return f"layouts/layout_{hall}_{time}.txt"
+
 #open filename as f and add to seatmap as nested list( an inner list representing a row of seats)
-def load_seatmap(hall):
-    filename = os.path.join(BASE_DIR, f"layout_{hall}.txt")
+def load_seatmap(hall, showtime):
+    filename = os.path.join(BASE_DIR, get_layout_filename(hall, showtime))
     seatmap = []
     try:
         with open(filename, "r") as f:
@@ -47,8 +51,8 @@ def update_seat(seatmap, row, col, status):
     seatmap[row][col] = status  # "X" to booked, "O" to free
 
 #overwrite the file by rejoining the updated seatmap list
-def save_seatmap(seatmap, hall):
-    filename = os.path.join(BASE_DIR, f"layout_{hall}.txt")
+def save_seatmap(seatmap, hall,showtime):
+    filename = os.path.join(BASE_DIR, get_layout_filename(hall, showtime))
     with open(filename, "w") as f:
         for row in seatmap:
             f.write(",".join(row) + "\n")
