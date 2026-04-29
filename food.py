@@ -107,7 +107,8 @@ def order_food():
         else:
             print("Invalid input, please try again.")
 
-if __name__ == "__main__":
+if __name__ == "__main__": #same as main function in java, this will only run if this file is executed directly, not imported as a module
     display_menu()
     order_food()
+
 

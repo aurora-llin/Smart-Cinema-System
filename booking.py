@@ -33,7 +33,7 @@ def book_tickets():
     hall = selected_movie['hall']
     seatmap_data = seatmap.load_seatmap(hall)
     seats = []
-    row_inputs = []
+    row_inputs = [] #we are using that in row based pricing later in pricing section
     while True:
         seatmap.display_seatmap(seatmap_data)
 
@@ -53,7 +53,7 @@ def book_tickets():
 
             if seatmap.is_seat_available(seatmap_data, row_index, col_index):
                 seats.append(f"{row_input}{col_input}")
-                row_inputs.append(row_input)
+                row_inputs.append(row_input)  # for pricing later
                 seatmap.update_seat(seatmap_data, row_index, col_index, "X")  
                 print(f"Seat {row_input}{col_input} added!")
                 break
@@ -127,8 +127,8 @@ def view_bookings():
                 return
             for line in lines:
                 parts = line.strip().split(",")
-                seat_field = parts[4]           # ← inside loop now
-                seat_list = seat_field.split(" & ")  # ← inside loop now
+                seat_field = parts[4]           # seats are stored with & seperated and as string
+                seat_list = seat_field.split(" & ")  # split into a list for counting
                 print(f"ID      : {parts[0]}")
                 print(f"Name    : {parts[1]}")
                 print(f"Movie   : {parts[2]}")
@@ -151,28 +151,28 @@ def cancel_booking():
         print("No bookings found.")
         return
 
-    found = None
-    remaining = []
+    found = None 
+    remaining = [] 
 
     for line in lines:
         parts = line.strip().split(",")
         if parts[0] == booking_id:
             found = parts
         else:
-            remaining.append(line)
+            remaining.append(line) 
     
     if not found:
         print(f"Booking ID '{booking_id}' not found.")
         return
 
     # Free the seat
-    hall = found[3].replace("Hall ", "")                
+    hall = found[3].replace("Hall ", "")     # extract hall number from "Hall X"           
     seat_field = found[4]
     seat_list = seat_field.split(" & ")
     seatmap_data = seatmap.load_seatmap(hall)
     for seat in seat_list:
         row_letter = seat[0]                           
-        col_number = seat[1:]                          
+        col_number = seat[1]                          
         row_index = seatmap.get_row_index(row_letter)
         col_index = seatmap.get_col_index(col_number)
         seatmap.update_seat(seatmap_data, row_index, col_index, "O")
