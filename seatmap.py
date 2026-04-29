@@ -1,9 +1,12 @@
+import os
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 ROWS = ['A', 'B', 'C', 'D', 'E', 'F']
 COLS = [1, 2, 3, 4, 5, 6, 7, 8]
 
 #open filename as f and add to seatmap as nested list( an inner list representing a row of seats)
 def load_seatmap(hall):
-    filename = f"layout_{hall}.txt"
+    filename = os.path.join(BASE_DIR, f"layout_{hall}.txt")
     seatmap = []
     try:
         with open(filename, "r") as f:
@@ -45,7 +48,7 @@ def update_seat(seatmap, row, col, status):
 
 #overwrite the file by rejoining the updated seatmap list
 def save_seatmap(seatmap, hall):
-    filename = f"layout_{hall}.txt"
+    filename = os.path.join(BASE_DIR, f"layout_{hall}.txt")
     with open(filename, "w") as f:
         for row in seatmap:
             f.write(",".join(row) + "\n")

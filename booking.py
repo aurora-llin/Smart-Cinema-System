@@ -3,8 +3,10 @@ import seatmap
 import smartPricing
 import food
 import random
+import os
 
-BOOKINGS_FILE = "bookings.txt"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+BOOKINGS_FILE = os.path.join(BASE_DIR, "bookings.txt")
 
 def generate_booking_id():
     return "BK" + str(random.randint(10000, 99999))
