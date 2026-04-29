@@ -17,6 +17,7 @@ def load_seatmap(hall):
 def display_seatmap(seatmap):
     print("\n                 S C R E E N")
     print("  " + "-" * 40)
+    print(format("1",">7s"), format("2",">3s"),format("3",">5s"),format("4",">3s"),format("5",">3s"),format("6",">3s"),format("7",">5s"),format("8",">3s"))
 
     for i, row in enumerate(seatmap):
         label = ROWS[i]

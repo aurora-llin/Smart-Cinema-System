@@ -26,5 +26,4 @@ def display_movies(movies):
         print(f"   Hall {m['hall']} | {m['start']} - {m['end']}")
     print("----------------------------------------")
 
-#test
-display_movies(load_movies())
+

@@ -2,8 +2,16 @@ import movie
 import seatmap
 import smartPricing
 import food
+import random
 
 BOOKINGS_FILE = "bookings.txt"
+
+def save_bookings(booking_record):
+    with open(BOOKINGS_FILE, "a") as f:
+        f.write(booking_record)
+
+def generate_booking_id():
+    return "BK" + str(random.randint(10000, 99999))
 
 def book_tickets():
     # Step 1: Display and select movie
@@ -47,21 +55,34 @@ def book_tickets():
         else:
             print(f"Seat {row_input}{col_input} is already occupied. Please choose another.")
 
-    # Step 3: Food pre-order (dummy for now)
+    # Step 3: Food pre-order 
     print("\n--- Food Pre-order ---")
-    print("(Food system coming soon)")
-    food_order = "None"
-    food_cost = 0.00
+    want_food = input("Would you like to pre-order food? (yes/no): ").lower()
+    if want_food == 'yes':
+        food.display_menu()
+        food_cart, food_cost = food.order_food()
+        food_order = " | ".join(food_cart)  # saves as one string to bookings.txt
+    else:
+        food_cart = []
+        food_cost = 0.00
+        food_order = "None"
 
-    # Step 4: Pricing (dummy for now)
+    # Step 4: Pricing
     print("\n--- Pricing ---")
-    base_price = selected_movie['price']
-    discount = 0.00
-    total = base_price + food_cost - discount
-    print(f"Base ticket price : ${base_price:.2f}")
-    print(f"Food cost         : ${food_cost:.2f}")
-    print(f"Discount          : -${discount:.2f}")
-    print(f"Total             : ${total:.2f}")
+    ticket_price = smartPricing.get_seat_price(row_input)
+    discount_code = input("Enter discount code (or press Enter to skip): ")
+    if discount_code:
+        discount = smartPricing.apply_discount(ticket_price, discount_code)
+        print(f"Discount applied: -${discount:.2f}")
+    else:
+        discount = 0.00
+        print("No discount code entered.")
+
+    total = ticket_price + food_cost - discount
+    print(f"\nTicket Price : ${ticket_price:.2f}")
+    print(f"Food Cost    : ${food_cost:.2f}")
+    print(f"Discount     : -${discount:.2f}")
+    print(f"Total        : ${total:.2f}")
 
     # Step 5: Confirm booking
     confirm = input("\nConfirm booking? (yes/no): ").lower()
@@ -104,6 +125,7 @@ def view_bookings():
                 print("----------------------------------------")
     except FileNotFoundError:
         print("No bookings found.")
+    input("\nPress Enter to return to menu...")
 
 
 def cancel_booking():
@@ -119,16 +141,16 @@ def cancel_booking():
     found = None
     remaining = []
 
+    if not found:
+        print(f"Booking ID '{booking_id}' not found.")
+        return
+
     for line in lines:
         parts = line.strip().split(",")
         if parts[0] == booking_id:
             found = parts
         else:
             remaining.append(line)
-
-    if not found:
-        print(f"Booking ID '{booking_id}' not found.")
-        return
 
     # Free the seat
     hall = found[3].replace("Hall ", "")
@@ -148,12 +170,3 @@ def cancel_booking():
 
     print(f"\nBooking {booking_id} has been cancelled and seat {seat} is now available.")
 
-
-def save_bookings(booking_record):
-    with open(BOOKINGS_FILE, "a") as f:
-        f.write(booking_record)
-
-
-def generate_booking_id():
-    import random
-    return "BK" + str(random.randint(10000, 99999))

@@ -1,7 +1,6 @@
 import utils
 import booking
 def display_main_menu():
-    # utils.clear_screen()
     print("========================================")
     print("      SMART CINEMA BOOKING SYSTEM       ")
     print("========================================")
@@ -22,7 +21,6 @@ while True:
     elif menu_choice == '3':
         booking.cancel_booking()
     elif menu_choice == '4':
-        booking.save_bookings()
         print("Thank you for using Smart Cinema Booking system. Goodbye!")
         break
     else:
