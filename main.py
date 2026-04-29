@@ -1,4 +1,3 @@
-import utils
 import booking
 def display_main_menu():
     print("========================================")

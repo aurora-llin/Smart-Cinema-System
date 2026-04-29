@@ -59,4 +59,9 @@ def get_row_index(letter):
 def get_col_index(number):
     return COLS.index(int(number))
 
+# #test
+# print(load_seatmap("A"))
+#print(is_seat_available(load_seatmap("A"), get_row_index("A"), get_col_index(1)))
+#print(update_seat(load_seatmap("A"), get_row_index("A"), get_col_index(1), "X"))
+
 

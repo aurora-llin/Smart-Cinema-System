@@ -42,7 +42,7 @@ def order_food():
             price = 5.50 if size == 'M' else 6.50
             print(f"Available: {', '.join(flavors_list)}")
             f_choice = input("Pick up to 2 flavors (comma separated): ").split(",")
-            f_clean = [f.strip() for f in f_choice][:2]
+            f_clean = [f.strip() for f in f_choice][:2]#make sure only two flavors are added
             cart.append(f"{size} Popcorn ({', '.join(f_clean)}) - ${price:.2f}")
             total_cost += price
 
@@ -86,4 +86,7 @@ def order_food():
 
         elif choice == '6':
             return cart, total_cost
+
+#test
+#order_food()
 
