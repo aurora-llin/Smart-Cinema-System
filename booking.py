@@ -135,12 +135,13 @@ def view_bookings():
                 return
             for line in lines:
                 parts = line.strip().split(",")
-                seat_field = parts[4]           # seats are stored with & seperated and as string
+                seat_field = parts[5]           # seats are stored with & seperated and as string
                 seat_list = seat_field.split(" & ")  # split into a list for counting
                 print(f"ID      : {parts[0]}")
                 print(f"Name    : {parts[1]}")
                 print(f"Movie   : {parts[2]}")
                 print(f"Hall    : {parts[3]}")
+                print(f"Showtime: {parts[4]}")  
                 print(f"Seats   : {seat_field} ({len(seat_list)} seat(s))")
                 print(f"Food    : {parts[5]}")
                 print(f"Total   : ${parts[6]}")
