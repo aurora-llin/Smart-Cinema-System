@@ -143,8 +143,8 @@ def view_bookings():
                 print(f"Hall    : {parts[3]}")
                 print(f"Showtime: {parts[4]}")  
                 print(f"Seats   : {seat_field} ({len(seat_list)} seat(s))")
-                print(f"Food    : {parts[5]}")
-                print(f"Total   : ${parts[6]}")
+                print(f"Food    : {parts[6]}")
+                print(f"Total   : ${parts[7]}")
                 print("----------------------------------------")
     except FileNotFoundError:
         print("No bookings found.")
