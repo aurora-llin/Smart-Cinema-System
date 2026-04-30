@@ -1,6 +1,7 @@
 import booking
 def display_main_menu():
     print("========================================")
+    print("                OPTIMA                  ")
     print("      SMART CINEMA BOOKING SYSTEM       ")
     print("========================================")
     print("1. Book Tickets")
