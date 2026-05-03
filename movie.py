@@ -86,5 +86,15 @@ def delete_movie():
             f.write(f"{m['title']},{m['hall']},{m['start']},{m['end']}\n")
 
     print(f"\n'{removed['title']}' at Hall {removed['hall']} {removed['start']} deleted successfully!")
+    # delete the layout file
+    import os
+    layout_file = os.path.join(BASE_DIR, f"layouts/layout_{removed['hall']}_{removed['start'].replace(':', '')}.txt")
+    if os.path.exists(layout_file):
+        os.remove(layout_file)
+        print(f"Layout file for Hall {removed['hall']} at {removed['start']} deleted.")
+    else:
+        print(f"Layout file not found — may have already been deleted.")
+
+    print(f"\n'{removed['title']}' deleted successfully!")
 
 
