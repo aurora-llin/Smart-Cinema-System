@@ -2,20 +2,41 @@ import movie
 import seatmap
 import smartPricing
 import food
-import random
 import os
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 BOOKINGS_FILE = os.path.join(BASE_DIR, "bookings.txt")
+ID_FILE = os.path.join(BASE_DIR, "last_id.txt")
 
-def generate_booking_id(): #initially I used random numbers but then I thought about possible diplicates.
+def generate_booking_id():
+    # read last used number
     try:
-        with open(BOOKINGS_FILE, "r") as f:
-            lines = f.readlines()
-            count = len(lines) + 1  
+        with open(ID_FILE, "r") as f:
+            last = int(f.read().strip())
     except FileNotFoundError:
-        count = 1
-    return f"BK{count:04d}"
+        last = 0
+
+    # increment and save
+    new_id = last + 1
+    with open(ID_FILE, "w") as f:
+        f.write(str(new_id))
+
+    return f"BK{new_id:04d}"  # → BK0001, BK0002, BK0003
+
+def generate_booking_id():
+    # read last used number
+    try:
+        with open(ID_FILE, "r") as f:
+            last = int(f.read().strip())
+    except FileNotFoundError:
+        last = 0
+
+    # increment and save
+    new_id = last + 1
+    with open(ID_FILE, "w") as f:
+        f.write(str(new_id))
+
+    return f"BK{new_id:04d}"
 
 def book_tickets():
     # Step 1: Display and select movie

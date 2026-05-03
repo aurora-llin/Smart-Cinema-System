@@ -9,3 +9,4 @@ The Super Mario Galaxy Movie,A,8:00,9:38
 The Super Mario Galaxy Movie,B,21:00,22:38
 Avatar: Fire and Ash,C,12:00,15:20
 Avatar: Fire and Ash,A,18:00,21:20
+
