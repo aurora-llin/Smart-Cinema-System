@@ -12,19 +12,20 @@ def display_role_menu():
 
 def display_main_menu():
     print("========================================")
-    print("                OPTIMA                  ")
-    print("      SMART CINEMA BOOKING SYSTEM       ")
+    print("           CUSTOMER MENU                ")
     print("========================================")
     print("1. Book Tickets")
     print("2. View My Bookings")
     print("3. Cancel a Booking")
-    print("4. Save & Exit")
+    print("4. Get Invoice")   #new
+    print("5. Back")
     print("----------------------------------------")
 
 def user_flow():
     while True:
         display_main_menu()
-        menu_choice = input("Please select an option (1-4): ")
+        menu_choice = input("Please select an option (1-5): ")
+
         if menu_choice == '1':
             booking.book_tickets()
         elif menu_choice == '2':
@@ -32,13 +33,14 @@ def user_flow():
         elif menu_choice == '3':
             booking.cancel_booking()
         elif menu_choice == '4':
-            print("Thank you for using Smart Cinema Booking system. Goodbye!")
+            bid = input("Enter booking ID: ").strip().upper()
+            booking.get_invoice(bid)
+        elif menu_choice == '5':
             break
         else:
-            print("Invalid option. Please enter a number between 1 and 4.")
+            print("Invalid option. Please enter a number between 1 and 5.")
 
-        input("\nPress Enter to return to the main menu...")
-
+        input("\nPress Enter to continue...")
 while True:
     display_role_menu()
     role = input("Please select who you are (1-3): ")

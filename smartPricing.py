@@ -31,5 +31,5 @@ def apply_discount(total, code):
     elif promo == "STUDENTLIFE":
         return total * 0.15
 
-    # If no code matches, just return the original total
-    return total
+    # If no code matches, just return 0 discount
+    return 0.0

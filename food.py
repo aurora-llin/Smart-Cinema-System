@@ -1,4 +1,4 @@
-import datetime
+
 
 import os
 
@@ -48,7 +48,7 @@ def order_food():
             print(f"Available: {', '.join(flavors_list)}")
             f_choice = input("Pick up to 2 flavors (comma separated): ").split(",")
             f_clean = [f.strip() for f in f_choice][:2]
-            cart.append(f"{size} Popcorn ({', '.join(f_clean)}) - ${price:.2f}")
+            cart.append(f"{size} Popcorn ({'&'.join(f_clean)}) - ${price:.2f}")
             total_cost += price
 
         elif choice == '2':

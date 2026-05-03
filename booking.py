@@ -9,6 +9,16 @@ BOOKINGS_FILE = os.path.join(BASE_DIR, "bookings.txt")
 ID_FILE = os.path.join(BASE_DIR, "last_id.txt")
 
 def generate_booking_id():
+    #reset id counter if bookings.txt is empty 
+    try:
+        with open(BOOKINGS_FILE, "r") as f:
+            lines = f.readlines()
+            if not lines:
+                with open(ID_FILE, "w") as id_f:
+                    id_f.write("0")
+    except FileNotFoundError:
+        with open(ID_FILE, "w") as id_f:
+            id_f.write("0")
     # read last used number
     try:
         with open(ID_FILE, "r") as f:
@@ -214,4 +224,44 @@ def cancel_booking():
         f.writelines(remaining)
 
     print(f"\nBooking {booking_id} has been cancelled and seats {seat_field} are now available.")
+
+def get_invoice(booking_id):
+    try:
+        with open(BOOKINGS_FILE, "r") as f:
+            lines = f.readlines()
+    except FileNotFoundError:
+        print("No bookings found.")
+        return
+
+    found = None
+    for line in lines:
+        parts = line.strip().split(",")
+        if parts[0] == booking_id:
+            found = parts
+            break
+
+    if not found:
+        print(f"Booking ID '{booking_id}' not found.")
+        return
+
+    seat_field = found[5]
+    seat_list = seat_field.split(" & ")
+
+    print("\n========================================")
+    print("              INVOICE                   ")
+    print("========================================")
+    print(f"Booking ID   : {found[0]}")
+    print(f"Name         : {found[1]}")
+    print("----------------------------------------")
+    print(f"Movie        : {found[2]}")
+    print(f"Hall         : {found[3]}")
+    print(f"Showtime     : {found[4]}")
+    print(f"Seats        : {seat_field} ({len(seat_list)} seat(s))")
+    print("----------------------------------------")
+    print(f"Food Order   : {found[6]}")
+    print("----------------------------------------")
+    print(f"TOTAL        : ${found[7]}")
+    print("========================================")
+    print("   Thank you for booking with us!")
+    print("========================================")
 

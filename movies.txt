@@ -1,4 +1,3 @@
-title,hall,showtime_start,showtime_end
 Project Hail Mary,A,10:00,12:40
 Project Hail Mary,B,18:00,20:40
 Avengers: DoomsDay,C,8:00,11:30
@@ -9,4 +8,3 @@ The Super Mario Galaxy Movie,A,8:00,9:38
 The Super Mario Galaxy Movie,B,21:00,22:38
 Avatar: Fire and Ash,C,12:00,15:20
 Avatar: Fire and Ash,A,18:00,21:20
-

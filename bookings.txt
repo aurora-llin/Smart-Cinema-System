@@ -1,2 +1,0 @@
-BK0002,cindy,Avatar: Fire and Ash,Hall C,12:00,D2,None,4.00
-BK0003,lin,The Super Mario Galaxy Movie,Hall A,8:00,E5,None,5.00
